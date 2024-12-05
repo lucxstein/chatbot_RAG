@@ -8,7 +8,7 @@ from langchain_community.chat_models import ChatOpenAI
 app = Flask(__name__)
 
 # Configuração da API OpenAI
-OPENAI_API_KEY = 'OPEN_AI_API_KEY'
+OPENAI_API_KEY = 'OPENAI_API_KEY'
 
 # Carregar o índice FAISS
 def carregar_indice():
