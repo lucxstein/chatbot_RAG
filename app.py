@@ -5,7 +5,6 @@ from langchain_community.embeddings import OpenAIEmbeddings
 from langchain.chains import RetrievalQA
 from langchain_openai import ChatOpenAI
 import traceback
-from collections import deque
 import os
 
 # Inicializar o app Flask
@@ -34,7 +33,6 @@ def criar_qa_chain():
 qa_chain = criar_qa_chain()
 
 # Endpoint para processar perguntas
-historico = deque(maxlen=15)
 @app.route('/', methods=['GET', 'POST'])
 def chat():
     try:
@@ -45,16 +43,8 @@ def chat():
         # Extrair a consulta do cliente
         query = data['query']
         
-        # Adicionar a consulta ao histórico
-        historico.append({"user": query})
-        
-        # Passar a consulta junto com o histórico para o QA Chain
-        contexto = " ".join([f"Usuário: {item['user']}\nResposta: {item.get('response', '')}" for item in historico if 'response' in item])
-        contexto += f"\nUsuário: {query}"
-        resposta_qa = qa_chain.run(contexto)
-        
-        # Adicionar a resposta ao histórico
-        historico[-1]['response'] = resposta_qa
+        # Passar a consulta para o QA Chain
+        resposta_qa = qa_chain.run(query)
         
         # Retornar a resposta ao cliente
         resposta = {"resposta": resposta_qa}
