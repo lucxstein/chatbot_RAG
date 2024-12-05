@@ -13,7 +13,7 @@ OPENAI_API_KEY = 'OPENAI_API_KEY'
 # Carregar o índice FAISS
 def carregar_indice():
     embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
-    faiss_index = FAISS.load_local("indice_brasileirao", embeddings)
+    faiss_index = FAISS.load_local("indice_brasileirao", embeddings, allow_dangerous_deserialization=True)
     return faiss_index
 
 # Inicializar o QA Chain
