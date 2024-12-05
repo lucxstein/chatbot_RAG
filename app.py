@@ -30,7 +30,7 @@ def criar_qa_chain():
 qa_chain = criar_qa_chain()
 
 # Endpoint para processar perguntas
-@app.route('/chat', methods=['POST'])
+@app.route('/', methods=['GET', 'POST'])
 def chat():
     data = request.json
     query = data.get("query", "")
