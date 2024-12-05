@@ -35,6 +35,7 @@ qa_chain = criar_qa_chain()
 # Endpoint para processar perguntas
 @app.route('/', methods=['GET', 'POST'])
 def chat():
+    global conversation_history
     try:
         data = request.json
         if not data or 'query' not in data:
@@ -43,8 +44,21 @@ def chat():
         # Extrair a consulta do cliente
         query = data['query']
         
-        # Passar a consulta para o QA Chain
-        resposta_qa = qa_chain.run(query)
+        # Adicionar a nova consulta ao histórico
+        conversation_history.append({"role": "user", "content": query})
+        
+        # Manter apenas as últimas 5 interações (5 mensagens do usuário e 5 respostas do bot)
+        if len(conversation_history) > 10:
+            conversation_history = conversation_history[-10:]
+        
+        # Construir o contexto com as mensagens do histórico
+        context = "\n".join([f"{msg['role']}: {msg['content']}" for msg in conversation_history])
+        
+        # Passar o contexto e a pergunta para o QA Chain
+        resposta_qa = qa_chain.run({"query": query, "context": context})
+        
+        # Adicionar a resposta ao histórico
+        conversation_history.append({"role": "bot", "content": resposta_qa})
         
         # Retornar a resposta ao cliente
         resposta = {"resposta": resposta_qa}
