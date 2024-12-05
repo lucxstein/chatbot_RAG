@@ -46,4 +46,7 @@ def chat():
 
 # Executar o servidor Flask
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=port)
+    # Obtém a porta obrigatoriamente da variável de ambiente
+    port = int(os.getenv("PORT"))
+    app.run(debug=False, host='0.0.0.0', port=port)
+
