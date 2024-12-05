@@ -33,20 +33,28 @@ def criar_qa_chain():
 qa_chain = criar_qa_chain()
 
 # Endpoint para processar perguntas
-@app.route('/', methods=['GET',  'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def chat():
     try:
         data = request.json
         if not data or 'query' not in data:
             raise ValueError("Campo 'query' ausente ou inválido.")
         
+        # Extrair a consulta do cliente
         query = data['query']
-        resposta = {"resposta": f"Você disse: {query}"}
+        
+        # Passar a consulta para o QA Chain
+        resposta_qa = qa_chain.run(query)
+        
+        # Retornar a resposta ao cliente
+        resposta = {"resposta": resposta_qa}
         return jsonify(resposta), 200
     except Exception as e:
+        import traceback
         error_trace = traceback.format_exc()
         print("Erro detalhado:", error_trace)  # Log do traceback completo
         return jsonify({"error": "Erro ao processar a solicitação"}), 500
+
 
 # Executar o servidor Flask
 if __name__ == '__main__':
