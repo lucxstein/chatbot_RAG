@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from langchain.vectorstores import FAISS
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.chains import RetrievalQA
-from langchain.chat_models import ChatOpenAI
+from langchain_community.chat_models import ChatOpenAI
 
 # Inicializar o app Flask
 app = Flask(__name__)
