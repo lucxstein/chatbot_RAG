@@ -34,7 +34,7 @@ def criar_qa_chain():
 qa_chain = criar_qa_chain()
 
 # Endpoint para processar perguntas
-historico = deque(maxlen=5)
+historico = deque(maxlen=15)
 @app.route('/', methods=['GET', 'POST'])
 def chat():
     try:
