@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain.chains import RetrievalQA
@@ -7,6 +8,7 @@ import os
 
 # Inicializar o app Flask
 app = Flask(__name__)
+CORS(app, origins=["http://localhost:3000"])
 
 # Configuração da API OpenAI
 OPENAI_API_KEY = 'OPENAI_API_KEY'
