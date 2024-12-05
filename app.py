@@ -4,6 +4,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain.chains import RetrievalQA
 from langchain_openai import ChatOpenAI
+import traceback
 import os
 
 # Inicializar o app Flask
@@ -32,19 +33,19 @@ def criar_qa_chain():
 qa_chain = criar_qa_chain()
 
 # Endpoint para processar perguntas
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET',  'POST'])
 def chat():
-    data = request.json
-    query = data.get("query", "")
-
-    if not query:
-        return jsonify({"error": "A consulta está vazia"}), 400
-
     try:
-        resposta = qa_chain.run(query)
-        return jsonify({"resposta": resposta})
+        data = request.json
+        if not data or 'query' not in data:
+            raise ValueError("Campo 'query' ausente ou inválido.")
+        
+        query = data['query']
+        resposta = {"resposta": f"Você disse: {query}"}
+        return jsonify(resposta), 200
     except Exception as e:
-        print(f"Erro: {e}")
+        error_trace = traceback.format_exc()
+        print("Erro detalhado:", error_trace)  # Log do traceback completo
         return jsonify({"error": "Erro ao processar a solicitação"}), 500
 
 # Executar o servidor Flask
