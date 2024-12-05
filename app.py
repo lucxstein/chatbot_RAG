@@ -5,6 +5,7 @@ from langchain_community.embeddings import OpenAIEmbeddings
 from langchain.chains import RetrievalQA
 from langchain_openai import ChatOpenAI
 import traceback
+from collections import deque
 import os
 
 # Inicializar o app Flask
