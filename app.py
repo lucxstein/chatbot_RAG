@@ -9,7 +9,7 @@ import os
 
 # Inicializar o app Flask
 app = Flask(__name__)
-CORS(app, origins=["https://chatfut.vercel.app"])
+CORS(app, origins=["*"])
 
 # Configuração da API OpenAI
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
@@ -55,6 +55,9 @@ def chat():
         print("Erro detalhado:", error_trace)  # Log do traceback completo
         return jsonify({"error": "Erro ao processar a solicitação"}), 500
 
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({"status": "UP"}), 200
 
 # Executar o servidor Flask
 if __name__ == '__main__':
