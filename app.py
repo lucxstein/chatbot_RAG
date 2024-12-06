@@ -9,7 +9,7 @@ import os
 
 # Inicializar o app Flask
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000", "https://chatfut.vercel.app/"])
+CORS(app, origins=["https://chatfut.vercel.app/"])
 
 # Configuração da API OpenAI
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
