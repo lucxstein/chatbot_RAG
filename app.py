@@ -23,7 +23,7 @@ def carregar_indice():
 # Inicializar o QA Chain
 def criar_qa_chain():
     faiss_index = carregar_indice()
-    chat_model = ChatOpenAI(temperature=0.2, model="gpt-5-nano", openai_api_key=OPENAI_API_KEY)
+    chat_model = ChatOpenAI(temperature=0, model="gpt-5-nano", openai_api_key=OPENAI_API_KEY)
     qa_chain = RetrievalQA.from_chain_type(
         llm=chat_model,
         retriever=faiss_index.as_retriever()
